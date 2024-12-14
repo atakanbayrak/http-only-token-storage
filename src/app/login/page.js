@@ -23,6 +23,10 @@ const LoginPage = () => {
         if (response === "SUCCESS") {
             console.log("Giriş başarılı");
             toast.success("Giriş başarılı");
+            if(Cookies.get("user-type") === "ROLE_ADMIN") {
+                router.push("/admin");
+            }
+            else
             router.push("/");
         }
         else {
@@ -47,9 +51,18 @@ const LoginPage = () => {
 
     return (
         <>
-        {!token ? <div className="flex h-screen">
+            {!token ? <div className="flex h-screen">
                 {/* Sol taraf */}
-                <div className="flex-1 bg-blue-500"></div>
+                <div
+                    className="flex-1"
+                    style={{
+                        backgroundImage: `url('/images/image-1.jpg')`, // Burada `url()` kullanılıyor
+                        backgroundSize: "cover",
+                        backgroundPosition: "center",
+                        backgroundRepeat: "no-repeat"
+                    }}
+                ></div>
+
 
                 {/* Sağ taraf */}
                 <div className="flex-1 flex items-center justify-center bg-gray-100">
@@ -92,11 +105,14 @@ const LoginPage = () => {
                             >
                                 Login
                             </button>
+                            <div className="text-center text-sm">
+                                <a href="/signup" className="text-blue-500">Don't you have an account Sign Up</a>
+                            </div>
                         </form>
                     </div>
                 </div>
             </div> : <div>Loading...</div>}
-            </>
+        </>
 
     );
 };

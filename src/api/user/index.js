@@ -26,3 +26,30 @@ export const getAllUsers = async () => {
         console.error(error);
     }
 };
+
+export const getUserById = async (id) => {
+
+    const token = Cookies.get("token");
+
+    try {
+        const response = await fetch(`http://localhost:8081/user/v1/getUserById?id=${id}`, {
+            cache: "no-store",
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+            },
+
+        });
+
+        if (!response.ok) {
+            return "ERROR";
+        }
+        const data = await response.json();
+        console.log(data);
+        return data;
+
+    } catch (error) {
+        console.error(error);
+    }
+}
