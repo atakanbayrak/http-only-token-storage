@@ -1,57 +1,32 @@
 "use client"
 import React from "react";
 import { useEffect, useState } from "react";
-import { login } from "@/api/auth";
 import { toast } from "react-toastify";
 import { useRouter } from 'next/navigation';
 import Cookies from "js-cookie";
+import { login } from "../api/login";
 
 const LoginPage = () => {
 
-    const [data, setData] = useState(null);
     const router = useRouter();
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
-    const [token, setToken] = useState(null);
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        console.log("Username: ", username);
         const response = await login(username, password);
-        setData(response);
-        console.log("DATA", response);
         if (response === "SUCCESS") {
-            console.log("Giriş başarılı");
             toast.success("Giriş başarılı");
-            if(Cookies.get("user-type") === "ROLE_ADMIN") {
-                router.push("/admin");
-            }
-            else
-            router.push("/");
+            router.push("/admin");
         }
         else {
-            console.log("Giriş başarısız");
             toast.error("Giriş başarısız");
         }
     };
 
-    useEffect(() => {
-        console.log("Page loaded");
-        const tk = Cookies.get("token");
-        setToken(tk);
-        if (tk) {
-            console.log("Token found: ", tk);
-            router.push("/");
-        }
-        else {
-            console.log("Token not found");
-        }
-    }
-        , []);
-
     return (
         <>
-            {!token ? <div className="flex h-screen">
+            <div className="flex h-screen">
                 {/* Sol taraf */}
                 <div
                     className="flex-1"
@@ -111,7 +86,7 @@ const LoginPage = () => {
                         </form>
                     </div>
                 </div>
-            </div> : <div>Loading...</div>}
+            </div> 
         </>
 
     );
